@@ -1,0 +1,53 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#keyboard {
+    width: 600px;
+    min-height: 360px;
+    background-image: url("./piano.png");
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+}
+
+.keys {
+    max-width: inherit;
+    max-height: inherit;
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    margin: auto 0.5rem 1.5rem;
+}
+
+.key {
+    transition: all .07s ease;
+    text-align: center;
+    color: pink;
+}
+
+kbd {
+    display: block;
+    font-size: 3rem;
+    padding: 0;
+}
+
+.playing {
+    transform: scale(1.1);
+    border-color: pink;
+    box-shadow: 0 0 1rem pink;
+}
+
+
+
+.sound {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    color: pink;
+}

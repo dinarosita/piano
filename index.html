@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Piano | Codey Luwak</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/x-icon" href="./note.ico">
+
+    </head>
+    <body>
+        <div id="keyboard">
+            <div class="keys">
+                <div data-key="65" class="key">
+                    <kbd>A</kbd>
+                    <span class="sound">do</span>
+                </div>
+                <div data-key="83" class="key">
+                    <kbd>S</kbd>
+                    <span class="sound">re</span>
+                </div>
+                <div data-key="68" class="key">
+                    <kbd>D</kbd>
+                    <span class="sound">mi</span>
+                </div>
+                <div data-key="70" class="key">
+                    <kbd>F</kbd>
+                    <span class="sound">fa</span>
+                </div>
+                <div data-key="71" class="key">
+                    <kbd>G</kbd>
+                    <span class="sound">sol</span>
+                </div>
+                <div data-key="72" class="key">
+                    <kbd>H</kbd>
+                    <span class="sound">la</span>
+                </div>
+                <div data-key="74" class="key">
+                    <kbd>J</kbd>
+                    <span class="sound">ti</span>
+                </div>
+                <div data-key="75" class="key">
+                    <kbd>K</kbd>
+                    <span class="sound">do</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="recorder">
+            <h1>Record song</h1>
+            <button id="startButton">Start</button>
+            <button id="endButton">End</button>
+            <button id="playButton">Play</button>
+        </div>
+
+
+        <audio data-key="65" src="./audio/key01.mp3"></audio>
+        <!-- <audio data-key="87" src="./audio/key02.mp3"></audio> -->
+        <audio data-key="83" src="./audio/key03.mp3"></audio>
+        <!-- <audio data-key="69" src="./audio/key04.mp3"></audio> -->
+        <audio data-key="68" src="./audio/key05.mp3"></audio>
+        <audio data-key="70" src="./audio/key06.mp3"></audio>
+        <!-- <audio data-key="84" src="./audio/key07.mp3"></audio> -->
+        <audio data-key="71" src="./audio/key08.mp3"></audio>
+        <!-- <audio data-key="89" src="./audio/key09.mp3"></audio> -->
+        <audio data-key="72" src="./audio/key10.mp3"></audio>
+        <!-- <audio data-key="85" src="./audio/key11.mp3"></audio> -->
+        <audio data-key="74" src="./audio/key12.mp3"></audio>
+        <audio data-key="75" src="./audio/key13.mp3"></audio>
+<!-- 
+        <script>
+   
+            function gatherNotes () {
+                console.log("Note gathering started");
+                const rawData = [];
+                let stop = false;
+                const timeStart = Date.now();
+
+                const endButton = document.getElementById("endButton");
+                endButton.addEventListener("click", () => {
+                    stop = true;
+                    console.log("Note gathering ended");
+                });
+
+                window.addEventListener("keydown", (e) => {
+                    playSound (e);
+                    if (rawData.length === 50 || Date.now() - timeStart >= 30000 || stop) {
+                        return rawData;
+                    } else {
+                        
+                        const keyStroke = {
+                            "keyCode": e.keyCode,
+                            "timeStamp": Date.now()
+                        }
+                        rawData.push(keyStroke);
+                        console.log(rawData);
+                    };
+                });
+
+            }
+
+            const startButton = document.getElementById("startButton");
+            startButton.addEventListener("click", gatherNotes);
+
+        </script> -->
+
+
+        <!-- <script src="./keyboard.js" defer></script> -->
+        <script>
+            let recording = false;
+            const rawData = [];
+
+            function startRecording () {
+                recording = true;
+                return;
+            }
+
+            function endRecording () {
+                recording = false;
+                return;
+            }
+
+            function playSound (e) {
+                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+                const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+                if (!audio) return;
+                audio.currentTime = 0;
+                audio.play();
+                key.classList.add("playing");
+
+                // Recording
+                if (recording) {
+                    const keyStroke = {
+                        "keyCode": e.keyCode,
+                        "timeStamp": Date.now()
+                    }
+                    rawData.push(keyStroke);
+                    console.log(rawData);
+                }
+            }          
+
+            function removeTransition(e) {
+                if(e.propertyName !== "transform") return;
+                this.classList.remove("playing");
+            }
+
+            function playMusic () {
+                for (let i = 0; i < rawData.length; i++) {
+                    if (i === 0) {
+                        rawData[i].duration = 100;
+                    } else {
+                        rawData[i].duration = rawData[i].timeStamp - rawData[i-1].timeStamp;
+                    }
+                    const audio = document.querySelector(`audio[data-key="${rawData[i].keyCode}"]`);
+                    console.log(rawData[i].keyCode);
+
+                    setTimeout (() => {audio.play()}, rawData[i].duration);
+                    
+                    
+                }
+                // rawData[rawData.length-1].duration = 1000;
+                // console.log("play music");
+                // console.log(rawData);
+            }
+
+            
+
+            const keys = document.querySelectorAll(".key");
+            keys.forEach(key => key.addEventListener("transitionend", removeTransition));
+            window.addEventListener("keydown", playSound);
+
+            const startButton = document.getElementById("startButton");
+            startButton.addEventListener("click", startRecording);
+
+            const endButton = document.getElementById("endButton");
+            endButton.addEventListener("click", endRecording);
+
+            const playButton = document.getElementById("playButton");
+            playButton.addEventListener("click", playMusic);
+
+        </script>
+    </body>
+</html>
